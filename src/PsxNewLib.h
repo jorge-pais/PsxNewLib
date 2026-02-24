@@ -162,7 +162,7 @@ static const byte set_pressures[] = {0x01, 0x4F, 0x00, 0xFF, 0xFF, 0x03, 0x00, 0
  * 
  * Command used to read the status of all buttons.
  */
-static const byte poll[] = {0x01, 0x42, 0x00, 0xFF, 0xFF};
+static const byte pollcmd[] = {0x01, 0x42, 0x00, 0xFF, 0xFF};
 //! @}
 
 /** \brief Controller Type
@@ -840,7 +840,7 @@ public:
 		unsigned long start = millis ();
 		do {
 			attention ();
-			//~ shiftInOut (poll, in, sizeof (poll));
+			//~ shiftInOut (pollcmd, in, sizeof (pollcmd));
 			//~ shiftInOut (exit_config, in, sizeof (exit_config));
 			byte *in = autoShift (exit_config, 4);
 			noAttention ();
@@ -899,14 +899,14 @@ public:
 		attention ();
 		byte *in = nullptr;
 		if(rumbleEnabled) {
-			byte out[sizeof (poll)];
-			memcpy(out, poll, sizeof(poll));
+			byte out[sizeof (pollcmd)];
+			memcpy(out, pollcmd, sizeof(pollcmd));
 			out[3] = motor1Level;
 			out[4] = motor2Level;
-			in = autoShift (out, sizeof(poll));
+			in = autoShift (out, sizeof(pollcmd));
 		}
 		else {
-			in = autoShift (poll, 3);
+			in = autoShift (pollcmd, 3);
 		}
 		noAttention ();
 
